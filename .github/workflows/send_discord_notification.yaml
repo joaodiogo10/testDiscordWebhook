@@ -5,8 +5,8 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     outputs:
-      test1_status: ${{ steps.test1.outputs.exit_code }}
-      test2_status: ${{ steps.test2.outputs.exit_code }}
+      isolated_tests_status: ${{ steps.test1.outputs.exit_code }}
+      contract_tests_status: ${{ steps.test2.outputs.exit_code }}
     steps:
       - name: Test1
         id: test1
@@ -17,41 +17,36 @@ jobs:
         run: echo "exit_code=0" >> "$GITHUB_OUTPUT"
         
   notify:
-    name: Notify
     runs-on: ubuntu-latest
     needs: test
-    if: always()
+    if: failure()
+
     steps:
-      - name: build string
+      - name: build message
         run: |
-          if [ "${{needs.test.outputs.test1_status}}" -gt 0 ]; then
-             echo "TEST1_STRING=Test1 failed" >> $GITHUB_ENV
+          if [ "${{needs.test.outputs.isolated_tests_status}}" -gt 0 ]; then
+             echo "ISOLATED_TESTS_STRING=Isolated tests failed" >> $GITHUB_ENV
              echo "Failed"
           else
-             echo "TEST1_STRING=Test1 failed" >> $GITHUB_ENV
+             echo "ISOLATED_TESTS_STRING=Isolated test passed" >> $GITHUB_ENV
              echo "Pass"
           fi
 
-          if [ "${{needs.test.outputs.test2_status}}" -gt 0 ]; then
-             echo "TEST2_STRING=Test2 failed" >> $GITHUB_ENV
+          if [ "${{needs.test.outputs.contract_tests_status}}" -gt 0 ]; then
+             echo "CONTRACT_TESTS_STRING=Contract tests failed" >> $GITHUB_ENV
              echo "Failed"
           else
-             echo "TEST2_STRING=Test2 failed" >> $GITHUB_ENV
+             echo "CONTRACT_TESTS_STRING=Contract tests passed" >> $GITHUB_ENV
              echo "Pass"
-          fi
-      - name: echo
-        run: | 
-          echo "The string is: ${{ env.MY_STRING }}"
-        
+          fi:
+
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          status: ${{ job.status }}
-          content: "Hey <@everyone>"
-          title: "My title"
-          description: "${{env.TEST1_STRING}}\n${{env.TEST2_STRING}}" 
+          content: "Backend is broken :( @Engineering 💻"
+          title: "backend tests"
+          description: "${{env.ISOLATED_TESTS_STRING}}\n${{env.CONTRACT_TESTS_STRING}}"
+          status: ${{needs.test.result}} 
           color: 0xff2a2a
-          image: ${{ secrets.EMBED_IMAGE }}
-          url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
-        
+          url: "https://github.com/joaodiogo10/testDiscordWebhook"
