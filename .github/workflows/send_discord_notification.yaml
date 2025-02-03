@@ -1,19 +1,35 @@
 name: discord message
 on: [push]
 jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    outputs:
+      test1_status: ${{ steps.test1.outputs.exit_code }}
+      test2_status: ${{ steps.test2.outputs.exit_code }}
+    steps:
+      - name: Test1
+        id: test1
+        run: exit 1
+
+      - name: Test2
+        id: test
+        run: exit
+        
   notify:
     name: Notify
     runs-on: ubuntu-latest
+    needs: test
+    if: always()
     steps:
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
-        if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           content: "Hey <@everyone>"
           title: "backend tests"
-          description: "Backend test"
+          description: "Backend test ${{ needs.build.outputs.test1_status }} and ${{ needs.build.outputs.test2_status }}" 
           color: 0xff2a2a
           image: ${{ secrets.EMBED_IMAGE }}
           url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
