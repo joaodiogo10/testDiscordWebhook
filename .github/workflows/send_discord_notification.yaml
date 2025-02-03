@@ -11,8 +11,9 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
-          content: "Hey <@316911818725392384>"
+          content: "Hey <@everyone>"
           title: "backend tests"
           description: "Backend test"
           color: 0xff2a2a
+          image: ${{ secrets.EMBED_IMAGE }}
           url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
