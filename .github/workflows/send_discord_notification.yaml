@@ -22,7 +22,7 @@ jobs:
     needs: test
     if: always()
     steps:
-      - name: echo
+      - name: build string
         run: |
           MY_STRING=$(cat << EOF
           first line
@@ -30,7 +30,8 @@ jobs:
           third line
           EOF
           )
-        #echo ${{ needs.test.outputs.test1_status }} ${{ needs.test.outputs.test2_status }}
+      - name: echo
+        run: echo "string: ${{ env.MY_STRING }}"
         
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
