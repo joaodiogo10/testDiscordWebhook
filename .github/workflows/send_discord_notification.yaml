@@ -49,8 +49,8 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           status: ${{ job.status }}
           content: "Hey <@everyone>"
-          title: "${{env.TEST1_STRING}}\n${{env.TEST2_STRING}}"
-          description: "${{ env.MY_STRING }}" 
+          title: "My title"
+          description: "${{env.TEST1_STRING}}\n${{env.TEST2_STRING}}" 
           color: 0xff2a2a
           image: ${{ secrets.EMBED_IMAGE }}
           url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
