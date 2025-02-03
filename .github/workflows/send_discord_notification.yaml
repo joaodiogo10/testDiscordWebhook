@@ -42,7 +42,7 @@ jobs:
           else
              echo "CONTRACT_TESTS_STRING=Contract tests passed" >> $GITHUB_ENV
              echo "Pass"
-          fi:
+          fi
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
