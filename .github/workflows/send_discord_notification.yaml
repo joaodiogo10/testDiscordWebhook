@@ -10,7 +10,9 @@ jobs:
     steps:
       - name: Test1
         id: test1
-        run: echo "exit_code=1" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "exit_code=1" >> "$GITHUB_OUTPUT"
+          exit 1
 
       - name: Test2
         id: test2
