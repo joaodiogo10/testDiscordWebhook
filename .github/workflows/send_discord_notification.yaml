@@ -43,7 +43,7 @@ jobs:
           status: ${{ job.status }}
           content: "Hey <@everyone>"
           title: "backend tests"
-          description: "${{ env.MY_STRING }}" 
+          description: "${{ env.MY_STRING_ENV }}" 
           color: 0xff2a2a
           image: ${{ secrets.EMBED_IMAGE }}
           url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
