@@ -23,7 +23,14 @@ jobs:
     if: always()
     steps:
       - name: echo
-        run: echo ${{ needs.test.outputs.test1_status }} ${{ needs.test.outputs.test2_status }}
+        run: |
+          MY_STRING=$(cat << EOF
+          first line
+          second line
+          third line
+          EOF
+          )
+        #echo ${{ needs.test.outputs.test1_status }} ${{ needs.test.outputs.test2_status }}
         
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
@@ -32,7 +39,7 @@ jobs:
           status: ${{ job.status }}
           content: "Hey <@everyone>"
           title: "backend tests"
-          description: "Backend test ${{ needs.test.outputs.test1_status }} and ${{ needs.test.outputs.test2_status }}" 
+          description: "${{ env.MY_STRING }}" 
           color: 0xff2a2a
           image: ${{ secrets.EMBED_IMAGE }}
           url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
