@@ -24,16 +24,17 @@ jobs:
     steps:
       - name: build string
         run: |
-          MULTI_LINES_TEXT="this is line one \n
-                            this is line two \n
-                            this is line three \n"    
-
-          echo "MULTI_LINES_TEXT_ENV_VAR<<EOF" >> $GITHUB_ENV
-          # here we can place the command that will generate multi-line text
-          echo $MULTI_LINES_TEXT >> $GITHUB_ENV
+          MY_STRING=$(cat << EOF
+          first line
+          second line
+          third line
+          EOF
+          )
+          echo "MY_STRING_ENV<<EOF" >> $GITHUB_ENV
+          echo $MY_STRING >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
       - name: echo
-        run: echo ${{ env.MULTI_LINES_TEXT_ENV_VAR }}
+        run: echo ${{ env.MY_STRING_ENV }}
         
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
