@@ -10,11 +10,11 @@ jobs:
     steps:
       - name: Test1
         id: test1
-        run: exit 1
+        run: exit 1 >> $GITHUB_OUTPUT
 
       - name: Test2
         id: test
-        run: exit
+        run: exit 0 >> $GITHUB_OUTPUT
         
   notify:
     name: Notify
