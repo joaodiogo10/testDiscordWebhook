@@ -30,11 +30,12 @@ jobs:
           third line
           EOF
           )
-          echo "MY_STRING_ENV<<EOF" >> $GITHUB_ENV
+          echo "MY_STRING<<EOF" >> $GITHUB_ENV
           echo $MY_STRING >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
       - name: echo
-        run: echo ${{ env.MY_STRING_ENV }}
+        run: | 
+          echo "The string is: ${{ env.MY_STRING }}"
         
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
@@ -43,7 +44,7 @@ jobs:
           status: ${{ job.status }}
           content: "Hey <@everyone>"
           title: "backend tests"
-          description: "${{ env.MY_STRING_ENV }}" 
+          description: "${{ env.MY_STRING }}" 
           color: 0xff2a2a
           image: ${{ secrets.EMBED_IMAGE }}
           url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
