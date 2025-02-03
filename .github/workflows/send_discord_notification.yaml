@@ -2,19 +2,19 @@ name: discord message
 on: [push]
 jobs:
   notify:
-    name: Notify 
+    name: Notify
     runs-on: ubuntu-latest
     steps:
-        - name: Send discord notification 
-          uses: sarisia/actions-status-discord@v1
-          if: always()
+      - name: Send discord notification
+        uses: sarisia/actions-status-discord@v1
+        if: always()
         with:
-            webhook: ${{ secrets.DISCORD_WEBHOOK }}
-            status: ${{ job.status }}
-            content: "Hey <@316911818725392384>"
-            title: "backend tests"
-            description: "Backend test"
-            image: ${{ secrets.EMBED_IMAGE }}
-            color: 0xffff2a2a
-            url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
-            avatar_url: ${{ secrets.AVATAR_URL }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          content: "Hey <@316911818725392384>"
+          title: "backend tests"
+          description: "Backend test"
+          image: ${{ secrets.EMBED_IMAGE }}
+          color: 0xffff2a2a
+          url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
+          avatar_url: ${{ secrets.AVATAR_URL }}
