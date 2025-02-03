@@ -11,12 +11,12 @@ jobs:
       - name: Test1
         id: test1
         run: |
-          echo "exit_code=1" >> "$GITHUB_OUTPUT"
+          echo "isolated_tests_status=1" >> "$GITHUB_OUTPUT"
           exit 1
 
       - name: Test2
         id: test2
-        run: echo "exit_code=0" >> "$GITHUB_OUTPUT"
+        run: echo "contract_tests_status=0" >> "$GITHUB_OUTPUT"
         
   notify:
     runs-on: ubuntu-latest
