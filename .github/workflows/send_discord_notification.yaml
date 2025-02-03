@@ -13,7 +13,7 @@ jobs:
         run: echo "exit_code=world" >> "$GITHUB_OUTPUT"
 
       - name: Test2
-        id: test
+        id: test2
         run: echo "exit_code=world" >> "$GITHUB_OUTPUT"
         
   notify:
