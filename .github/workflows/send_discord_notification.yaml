@@ -14,6 +14,5 @@ jobs:
           content: "Hey <@316911818725392384>"
           title: "backend tests"
           description: "Backend test"
-          image: ${{ secrets.EMBED_IMAGE }}
-          color: 0xffff2a2a
+          color: 0xff2a2a
           url: "https://github.com/joaodiogo10/testDiscordWebhook/actions/workflows/send_discord_notification.yaml"
