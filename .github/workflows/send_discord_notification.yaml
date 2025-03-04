@@ -50,6 +50,7 @@ jobs:
           echo $RESULT_MESSAGE
 
           echo "RESULT_MESSAGE=$RESULT_MESSAGE" >> $GITHUB_ENV
+          echo "The string is: ${{ env.RESULT_MESSAGE}}"
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
@@ -57,7 +58,7 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           content: "Backend is broken :( <@Engineering>"
           title: "backend tests"
-          description: "${{env.result_message}}"
+          description: "${{env.RESULT_MESSAGE}}"
           status: ${{needs.test.result}}
           color: 0xff2a2a
           url: "https://github.com/joaodiogo10/testDiscordWebhook"
