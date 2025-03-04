@@ -16,10 +16,10 @@ jobs:
 
       - name: Test2
         id: test2
-        run: | 
+        run: |
           echo "exit_code=0" >> "$GITHUB_OUTPUT"
           exit 1
-        
+
   notify:
     runs-on: ubuntu-latest
     needs: test
@@ -28,21 +28,27 @@ jobs:
     steps:
       - name: build message
         run: |
-          if [ "${{needs.test.outputs.isolated_tests_status}}" -gt 0 ]; then
-             echo "ISOLATED_TESTS_STRING=Isolated tests failed" >> $GITHUB_ENV
-             echo "Failed"
-          else
-             echo "ISOLATED_TESTS_STRING=Isolated test passed" >> $GITHUB_ENV
-             echo "Pass"
-          fi
+          echo "isolated tests status code: ${{needs.test.outputs.isolated_tests_status}}"
+          echo "contract tests status code: ${{needs.test.outputs.contract_tests_status}}"
 
-          if [ "${{needs.test.outputs.contract_tests_status}}" -gt 0 ]; then
-             echo "CONTRACT_TESTS_STRING=Contract tests failed" >> $GITHUB_ENV
-             echo "Failed"
-          else
-             echo "CONTRACT_TESTS_STRING=Contract tests passed" >> $GITHUB_ENV
-             echo "Pass"
-          fi
+          set_status_string() {
+            local status=$1
+            local name=$2
+            local success_message=$3
+            local failure_message=$4
+            local skipped_message=$5
+
+            if [ -z "$status" ]; then
+              echo "${name}=${skipped_message}" >> $GITHUB_ENV
+            elif [ "$status" != "0" ]; then
+              echo "${name}=${failure_message}" >> $GITHUB_ENV
+            else
+              echo "${name}=${success_message}" >> $GITHUB_ENV
+            fi
+          }
+
+          set_status_string "${{needs.test.outputs.isolated_tests_status}}" "ISOLATED_TESTS_STRING" "Isolated tests passed" "Isolated tests failed" "Isolated tests skipped"
+          set_status_string "${{needs.test.outputs.contract_tests_status}}" "CONTRACT_TESTS_STRING" "Contract tests passed" "Contract tests failed" "Contract test skipped"
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
@@ -51,6 +57,6 @@ jobs:
           content: "Backend is broken :( <@Engineering>"
           title: "backend tests"
           description: "${{env.ISOLATED_TESTS_STRING}}\n${{env.CONTRACT_TESTS_STRING}}"
-          status: ${{needs.test.result}} 
+          status: ${{needs.test.result}}
           color: 0xff2a2a
           url: "https://github.com/joaodiogo10/testDiscordWebhook"
