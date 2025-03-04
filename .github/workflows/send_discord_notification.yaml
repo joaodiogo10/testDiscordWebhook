@@ -50,7 +50,10 @@ jobs:
           echo $RESULT_MESSAGE
 
           echo "RESULT_MESSAGE=$RESULT_MESSAGE" >> $GITHUB_ENV
+
+          echo "RESULT_MESSAGE<<EOF" >> $GITHUB_ENV
           echo "The string is: ${{ env.RESULT_MESSAGE}}"
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
