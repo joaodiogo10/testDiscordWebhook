@@ -36,18 +36,18 @@ jobs:
             local title=$2
 
             if [ -z "$status" ]; then
-              echo "${title}:\n\tSkip" >> $GITHUB_ENV
+              echo "${title}: Skip" >> $GITHUB_ENV
             elif [ "$status" != "0" ]; then
-              echo "${title}:\n\tFail" >> $GITHUB_ENV
+              echo "${title}: Fail" >> $GITHUB_ENV
             else
-              echo "${title}:\n\tPass" >> $GITHUB_ENV
+              echo "${title}: Pass" >> $GITHUB_ENV
             fi
           }
 
           echo "RESULT_MESSAGE=" >> $GITHUB_ENV
           set_status_string "${{needs.test.outputs.isolated_tests_status}}" "Isolated tests"
           set_status_string "${{needs.test.outputs.contract_tests_status}}" "Contract tests"
-          echo
+          echo "{RESULT_MESSAGE}"
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
