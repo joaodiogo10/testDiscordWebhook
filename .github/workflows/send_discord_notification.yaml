@@ -47,6 +47,7 @@ jobs:
           echo "${result_message}=" >> $GITHUB_ENV
           set_status_string "${{needs.test.outputs.isolated_tests_status}}" "Isolated tests"
           set_status_string "${{needs.test.outputs.contract_tests_status}}" "Contract tests"
+          echo
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
@@ -54,7 +55,7 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           content: "Backend is broken :( <@Engineering>"
           title: "backend tests"
-          description: "${{env.ISOLATED_TESTS_STRING}}\n${{env.CONTRACT_TESTS_STRING}}"
+          description: "${{env.result_message}}"
           status: ${{needs.test.result}}
           color: 0xff2a2a
           url: "https://github.com/joaodiogo10/testDiscordWebhook"
