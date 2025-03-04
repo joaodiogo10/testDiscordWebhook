@@ -33,22 +33,20 @@ jobs:
 
           set_status_string() {
             local status=$1
-            local title=$2
+            local env_name=$2
+            local title=$3
 
             if [ -z "$status" ]; then
-              echo "${title}: Skip\n"
+              echo "${env_name}=${title}: Skip" >> $GITHUB_ENV
             elif [ "$status" != "0" ]; then
-              echo "${title}: Fail\n"
+              echo "${env_name}=${title}: Fail" >> $GITHUB_ENV
             else
-              echo "${title}: Pass\n"
+              echo "${env_name}=${title}: Pass" >> $GITHUB_ENV
             fi
           }
 
-          RESULT_MESSAGE=""
-          RESULT_MESSAGE+=$(set_status_string "${{needs.test.outputs.isolated_tests_status}}" "Isolated tests")
-          RESULT_MESSAGE+=$(set_status_string "${{needs.test.outputs.contract_tests_status}}" "Contract tests")
-          echo $RESULT_MESSAGE
-          echo "RESULT_MESSAGE=$RESULT_MESSAGE" >> $GITHUB_ENV
+          set_status_string "${{needs.test.outputs.isolated_tests_status}}" "ISOLATED_TESTS_RESULT" "Isolated tests"
+          set_status_string "${{needs.test.outputs.contract_tests_status}}" "CONTRACT_TESTS_RESULT" "Contract tests"
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
@@ -57,7 +55,8 @@ jobs:
           content: "Backend is broken :( <@Engineering>"
           title: "backend tests"
           description: |
-            "${{env.RESULT_MESSAGE}}"
+            "${{env.ISOLATED_TESTS_RESULT}}"
+            "${{env.CONTRACT_TESTS_RESULT}}"
           status: ${{needs.test.result}}
           color: 0xff2a2a
           url: "https://github.com/joaodiogo10/testDiscordWebhook"
