@@ -33,22 +33,20 @@ jobs:
 
           set_status_string() {
             local status=$1
-            local name=$2
-            local success_message=$3
-            local failure_message=$4
-            local skipped_message=$5
+            local title=$2
 
             if [ -z "$status" ]; then
-              echo "${name}=${skipped_message}" >> $GITHUB_ENV
+              echo "${title}:\n\tSkip" >> $GITHUB_ENV
             elif [ "$status" != "0" ]; then
-              echo "${name}=${failure_message}" >> $GITHUB_ENV
+              echo "${title}:\n\tFail" >> $GITHUB_ENV
             else
-              echo "${name}=${success_message}" >> $GITHUB_ENV
+              echo "${title}:\n\tPass" >> $GITHUB_ENV
             fi
           }
 
-          set_status_string "${{needs.test.outputs.isolated_tests_status}}" "ISOLATED_TESTS_STRING" "Isolated tests passed" "Isolated tests failed" "Isolated tests skipped"
-          set_status_string "${{needs.test.outputs.contract_tests_status}}" "CONTRACT_TESTS_STRING" "Contract tests passed" "Contract tests failed" "Contract test skipped"
+          echo "${result_message}=" >> $GITHUB_ENV
+          set_status_string "${{needs.test.outputs.isolated_tests_status}}" "Isolated tests"
+          set_status_string "${{needs.test.outputs.contract_tests_status}}" "Contract tests"
 
       - name: Send discord notification
         uses: sarisia/actions-status-discord@v1
