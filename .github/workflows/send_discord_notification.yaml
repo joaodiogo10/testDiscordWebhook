@@ -44,7 +44,7 @@ jobs:
             fi
           }
 
-          echo "${RESULT_MESSAGE}=" >> $GITHUB_ENV
+          echo "RESULT_MESSAGE=" >> $GITHUB_ENV
           set_status_string "${{needs.test.outputs.isolated_tests_status}}" "Isolated tests"
           set_status_string "${{needs.test.outputs.contract_tests_status}}" "Contract tests"
           echo
