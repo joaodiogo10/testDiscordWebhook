@@ -56,7 +56,8 @@ jobs:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           content: "Backend is broken :( <@Engineering>"
           title: "backend tests"
-          description: "${{env.RESULT_MESSAGE}}"
+          description: |
+            "${{env.RESULT_MESSAGE}}"
           status: ${{needs.test.result}}
           color: 0xff2a2a
           url: "https://github.com/joaodiogo10/testDiscordWebhook"
