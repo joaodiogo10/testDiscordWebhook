@@ -36,11 +36,11 @@ jobs:
             local title=$2
 
             if [ -z "$status" ]; then
-              echo "${title}: Skip"
+              echo "${title}: Skip\n"
             elif [ "$status" != "0" ]; then
-              echo "${title}: Fail"
+              echo "${title}: Fail\n"
             else
-              echo "${title}: Pass"
+              echo "${title}: Pass\n"
             fi
           }
 
