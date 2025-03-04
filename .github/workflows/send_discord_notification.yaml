@@ -55,8 +55,8 @@ jobs:
           content: "Backend is broken :( <@Engineering>"
           title: "backend tests"
           description: |
-            "${{env.ISOLATED_TESTS_RESULT}}"
-            "${{env.CONTRACT_TESTS_RESULT}}"
+            ${{env.ISOLATED_TESTS_RESULT}}
+            ${{env.CONTRACT_TESTS_RESULT}}
           status: ${{needs.test.result}}
           color: 0xff2a2a
           url: "https://github.com/joaodiogo10/testDiscordWebhook"
