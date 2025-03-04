@@ -30,8 +30,8 @@ jobs:
           content: "Backend is broken :( <@Engineering>"
           title: "backend tests"
           description: |
-            Isolated tests: ${${{steps.test1.outcome}} || "Skipped"}}
-            Contract tests: ${${{steps.test2.outcome}} || "Skipped"}}
+            Isolated tests: ${{steps.test1.outcome}}
+            Contract tests: ${{steps.test2.outcome}}
           status: ${{job.status}}
           color: 0xff2a2a
           url: "https://github.com/joaodiogo10/testDiscordWebhook"
