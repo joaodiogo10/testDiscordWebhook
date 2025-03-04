@@ -36,11 +36,11 @@ jobs:
             local title=$2
 
             if [ -z "$status" ]; then
-              echo "${title}: Skip" >> $GITHUB_ENV
+              echo "${title}:Skip" >> $GITHUB_ENV
             elif [ "$status" != "0" ]; then
-              echo "${title}: Fail" >> $GITHUB_ENV
+              echo "${title}:Fail" >> $GITHUB_ENV
             else
-              echo "${title}: Pass" >> $GITHUB_ENV
+              echo "${title}:Pass" >> $GITHUB_ENV
             fi
           }
 
