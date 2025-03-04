@@ -10,15 +10,17 @@ jobs:
     steps:
       - name: Test1
         id: test1
-        run: |
-          echo "exit_code=1" >> "$GITHUB_OUTPUT"
-          exit 0
+        run: exit 0
 
       - name: Test2
         id: test2
+        run: exit 1
+
+      - name: "Verify results"
+        if: always()
         run: |
-          echo "exit_code=0" >> "$GITHUB_OUTPUT"
-          exit 1
+          echo "${{ steps.test1.outcome }}"
+          echo "${{ steps.test2.outcome }}"
 
   notify:
     runs-on: ubuntu-latest
